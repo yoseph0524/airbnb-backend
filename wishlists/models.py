@@ -11,12 +11,15 @@ class Wishlist(CommonModel):
     )
     rooms = models.ManyToManyField(
         "rooms.Room",
+        related_name="wishlists",
     )
     experiences = models.ManyToManyField(
         "experiences.Experience",
+        related_name="wishlists",
     )
     user = models.ForeignKey(
         "users.User",
+        related_name="wishlists",
         on_delete=models.CASCADE,
     )
 
