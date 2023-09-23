@@ -51,7 +51,6 @@ class ReviewAdmin(admin.ModelAdmin):
     list_filter = (
         WordFilter,
         RatingFilter,
-        "rating",
         "user__is_host",
         "room__category",
         "room__pet_friendly",
