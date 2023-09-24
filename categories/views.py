@@ -10,7 +10,11 @@ from .serializers import CategorySerializer
 class Categories(APIView):
     def get(self, request):
         all_categories = Category.objects.all()
-        serializer = CategorySerializer(all_categories, many=True)
+        serializer = CategorySerializer(
+            all_categories,
+            many=True,
+        )
+        return Response(serializer.data)
         return Response(serializer.data)
 
     def post(self, request):
@@ -43,7 +47,9 @@ class CategoryDetail(APIView):
         )
         if serializer.is_valid():
             updated_category = serializer.save()
-            return Response(CategorySerializer(updated_category).data)
+            return Response(
+                CategorySerializer(updated_category).data,
+            )
         else:
             return Response(serializer.errors)
 
