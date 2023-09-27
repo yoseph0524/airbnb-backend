@@ -13,6 +13,7 @@ from rooms.models import Room
 from rooms.serializers import RoomListSerializer
 from reviews.models import Review
 from reviews.serializers import ReviewSerializer
+from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 
 
 class Me(APIView):
@@ -119,9 +120,9 @@ class LogIn(APIView):
         )
         if user:
             login(request, user)
-            return Response({"ok": "Welcome!"})
+            return Response({"ok": "Welcome!"}, status=HTTP_200_OK)
         else:
-            return Response({"error": "wrong password"})
+            return Response({"error": "wrong password"}, status=HTTP_400_BAD_REQUEST)
 
 
 class LogOut(APIView):
@@ -246,3 +247,50 @@ class KakaoLogIn(APIView):
                 return Response(status=status.HTTP_200_OK)
         except Exception:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+class SignUp(APIView):
+    def post(self, request):
+        try:
+            name = request.data.get("name")
+            username = request.data.get("username")
+            email = request.data.get("email")
+            password = request.data.get("password")
+
+            print(
+                f"\n\nname: {name}\nusername: {username}\npassword: {password}\nemail: {email}\n\n"
+            )
+
+            # name and password are could be overlap
+            # but, username and email are could't be overlap
+
+            if User.objects.filter(username=username):
+                return Response(
+                    {"fail": "can not use this username due to already used."},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+            if User.objects.filter(email=email):
+                return Response(
+                    {"fail": "can not use this email due to already used."},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+            user = User.objects.create(
+                email=email,
+                name=name,
+                username=username,
+            )
+            user.set_password(password)
+            user.save()
+            login(request, user)
+            return Response(
+                {
+                    "success": "created successed",
+                },
+                status=status.HTTP_200_OK,
+            )
+        except Exception as e:
+            return Response(
+                {"fail": f"occurred some error while creating as {e}"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )

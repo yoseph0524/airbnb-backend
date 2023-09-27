@@ -15,4 +15,5 @@ urlpatterns = [
     path("@<str:username>", views.PublicUser.as_view()),
     path("@<str:username>/rooms", views.UserRooms.as_view()),
     path("@<str:username>/reviews", views.UserReviews.as_view()),
+    path("create", views.SignUp.as_view()),
 ]
