@@ -27,7 +27,8 @@ environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env("SECRET_KEY", default="asdfasdfasdfasdf")
+SECRET_KEY = env("SECRET_KEY")
+GH_SECRET = env("GH_SECRET", default="asdfasdfasdfasdf")
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -192,7 +193,6 @@ CORS_ALLOW_CREDENTIALS = True
 
 CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:3000"]
 
-GH_SECRET = env("GH_SECRET")
 
 CF_ID = env("CF_ID")
 CF_TOKEN = env("CF_TOKEN")
