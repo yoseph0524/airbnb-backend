@@ -14,6 +14,7 @@ from pathlib import Path
 import os
 import environ
 import dj_database_url
+import sentry_sdk
 
 env = environ.Env()
 
@@ -196,3 +197,11 @@ CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:3000"]
 
 CF_ID = env("CF_ID", default="asdfasdfasdfasdf")
 CF_TOKEN = env("CF_TOKEN", default="asdfasdfasdfasdf")
+
+
+if not DEBUG:
+    sentry_sdk.init(
+        dsn="https://dca1fe1177c2cfcb2082cc181d08f3ce@o4505956712448001.ingest.sentry.io/4505956719919104",
+        traces_sample_rate=1.0,
+        profiles_sample_rate=1.0,
+    )
